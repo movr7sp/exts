@@ -16,18 +16,23 @@ type files struct {
 func main() {
 
 	var listfiles bool = false
+	var extslice []string
 
 	if len(os.Args) < 2 {
 		fmt.Println("USAGE: exts path [-l]")
 	}
 
-	var extslice []string
-
-	if len(os.Args) > 2 && os.Args[2] == "-l" {
-		if len(os.Args) > 3 {
-			extslice = os.Args[3:]
+	if len(os.Args) > 2 {
+		if os.Args[2] == "-l" {
+			listfiles = true
+			if len(os.Args) > 3 {
+				extslice = os.Args[3:]
+			}
+		} else {
+			listfiles = true
+			extslice = os.Args[2:]
 		}
-		listfiles = true
+
 	}
 
 	var f files
@@ -35,9 +40,9 @@ func main() {
 	f.exts = make(map[string][]string)
 
 	var wg sync.WaitGroup
-	//traverse(os.Args[1], &wg, &f)
 	wg.Add(1)
-	go traverse(".", &wg, &f)
+	go traverse(os.Args[1], &wg, &f)
+
 	wg.Wait()
 
 	printoutput(f.exts, listfiles, extslice)
@@ -83,10 +88,16 @@ func getext(name string) string {
 }
 
 func printoutput(extsmap map[string][]string, listfiles bool, extslice []string) {
+
 	if listfiles {
 		if len(extslice) == 0 {
 			for key, value := range extsmap {
-				fmt.Println(key)
+				if key == "" {
+					fmt.Println("WITHOUT EXTENSION")
+				} else {
+					fmt.Println(key)
+				}
+
 				for _, v := range value {
 					fmt.Println("\t" + v)
 				}
@@ -104,8 +115,12 @@ func printoutput(extsmap map[string][]string, listfiles bool, extslice []string)
 		}
 
 	} else {
+		fmt.Println("EXTENSIONS: ")
 		for key, _ := range extsmap {
-			fmt.Println(key)
+			if key == "" {
+				continue
+			}
+			fmt.Println("\t" + "." + key)
 		}
 	}
 }
