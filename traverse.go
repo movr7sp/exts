@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 )
@@ -23,22 +24,17 @@ func traverse(dir string, wg *sync.WaitGroup, f *files) {
 	}
 
 	for _, node := range nodes {
-
 		name := node.Name()
-		path := dir
-		if path[len(dir)-1] != '/' {
-			path = path + "/"
-		}
+		path := filepath.Join(dir, name)
 
 		if node.IsDir() {
 			wg.Add(1)
-			path = path + name
 			go traverse(path, wg, f)
 
 		} else {
 			ext := getext(name)
 			f.mu.Lock()
-			f.extsmap[ext] = append(f.extsmap[ext], path+name)
+			f.extsmap[ext] = append(f.extsmap[ext], path)
 			f.mu.Unlock()
 		}
 	}
