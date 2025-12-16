@@ -25,20 +25,20 @@ func traverse(dir string, wg *sync.WaitGroup, f *files) {
 	for _, node := range nodes {
 
 		name := node.Name()
-
-		if dir[len(dir)-1] != '/' {
-			dir = dir + "/"
+		path := dir
+		if path[len(dir)-1] != '/' {
+			path = path + "/"
 		}
 
 		if node.IsDir() {
 			wg.Add(1)
-			dir = dir + name
-			go traverse(dir, wg, f)
+			path = path + name
+			go traverse(path, wg, f)
 
 		} else {
 			ext := getext(name)
 			f.mu.Lock()
-			f.extsmap[ext] = append(f.extsmap[ext], dir+name)
+			f.extsmap[ext] = append(f.extsmap[ext], path+name)
 			f.mu.Unlock()
 		}
 	}

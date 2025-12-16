@@ -24,4 +24,6 @@ func main() {
 	go traverse(p.root, &wg, &files)
 
 	wg.Wait()
+
+	printoutput(files.extsmap, p)
 }
