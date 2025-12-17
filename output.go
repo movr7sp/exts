@@ -18,6 +18,7 @@ func printoutput(extsmap map[string][]string, p params) {
 			fmt.Println("----")
 			fmt.Println("some files without extension")
 		}
+		return
 	}
 
 	if p.list && p.extfilter[0] == "" {

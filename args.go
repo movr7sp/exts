@@ -21,14 +21,13 @@ func parseargs(args []string) (params, error) {
 
 	j := 0
 
-	help := `USAGE: 
-				exts [PATH] [-l] [-e] [EXTENSIONS]
-
-				OPTIONS:
-					-l
-						list all files grouped by extension
-					-e
-						list only files without extensions`
+	help := `
+USAGE: exts [PATH] [-l] [-e] [EXTENSIONS]
+OPTIONS:
+		-l
+			list all files grouped by extension
+		-e
+			list only files without extensions`
 
 	for i := 1; i < len(args); i++ {
 
@@ -53,7 +52,8 @@ func parseargs(args []string) (params, error) {
 				if arg[0] == '-' {
 					return params{}, errors.New("Unknown argmuent: " + arg)
 				}
-				if i == 0 {
+
+				if i == 1 {
 					p.root = arg
 				} else {
 					p.extfilter[j] = arg
