@@ -1,4 +1,4 @@
-exts [PATH] [-l] [-e] [EXTENSIONS]
+exts [PATH] [-l] [-e] [EXTENSIONS] <br>
 OPTIONS:
 		-l
 			list all files grouped by extension
