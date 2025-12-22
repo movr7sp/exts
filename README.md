@@ -1,6 +1,4 @@
-exts [PATH] [-l] [-e] [EXTENSIONS] <br>
+### exts [PATH] [-l] [-e] [EXTENSIONS] <br>
 OPTIONS:
-		-l
-			list all files grouped by extension
-		-e
-			list only files without extensions
+ - -l list all files grouped by extension
+ - -e list only files without extensions
