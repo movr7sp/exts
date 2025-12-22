@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"os"
-	"path/filepath"
 	"strings"
 	"sync"
 )
@@ -13,7 +12,6 @@ type files struct {
 	extsmap map[string][]string
 }
 
-// always recursive
 func traverse(dir string, wg *sync.WaitGroup, f *files) {
 	defer wg.Done()
 
@@ -25,7 +23,7 @@ func traverse(dir string, wg *sync.WaitGroup, f *files) {
 
 	for _, node := range nodes {
 		name := node.Name()
-		path := filepath.Join(dir, name)
+		path := dir + "/" + name
 
 		if node.IsDir() {
 			wg.Add(1)

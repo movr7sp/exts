@@ -8,8 +8,8 @@ import (
 
 type params struct {
 	root      string
-	list      bool
-	empty     bool
+	showfiles bool
+	showempty bool
 	extfilter []string
 }
 
@@ -41,11 +41,11 @@ OPTIONS:
 			}
 		case "-l":
 			{
-				p.list = true
+				p.showfiles = true
 			}
 		case "-e":
 			{
-				p.empty = true
+				p.showempty = true
 			}
 		default:
 			{
@@ -54,7 +54,15 @@ OPTIONS:
 				}
 
 				if i == 1 {
-					p.root = arg
+					_, err := os.ReadDir(arg)
+					if err == nil {
+						p.root = arg
+					} else {
+						p.root = "."
+						p.extfilter[j] = arg
+						j++
+					}
+
 				} else {
 					p.extfilter[j] = arg
 					j++

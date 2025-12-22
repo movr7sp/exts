@@ -4,24 +4,17 @@ import "fmt"
 
 func printoutput(extsmap map[string][]string, p params) {
 
-	if p.list == false && p.empty == false && p.extfilter[0] == "" {
-		flag := 0
+	if p.showfiles == false && p.showempty == false && p.extfilter[0] == "" {
 		for key, _ := range extsmap {
 			if key != "" {
 				fmt.Println("." + key)
-			} else {
-				flag = 1
 			}
 		}
 
-		if flag == 1 {
-			fmt.Println("----")
-			fmt.Println("some files without extension")
-		}
 		return
 	}
 
-	if p.list && p.extfilter[0] == "" {
+	if p.showfiles == true && p.extfilter[0] == "" {
 		for key, value := range extsmap {
 			if key == "" {
 				fmt.Println("Without extension: ")
@@ -36,7 +29,7 @@ func printoutput(extsmap map[string][]string, p params) {
 		return
 	}
 
-	if p.empty {
+	if p.showempty {
 		for key, value := range extsmap {
 			if key == "" {
 				fmt.Println("Without extension: ")
@@ -54,6 +47,9 @@ func printoutput(extsmap map[string][]string, p params) {
 	if p.extfilter[0] != "" {
 		for _, filter := range p.extfilter {
 
+			if filter == "" {
+				continue
+			}
 			values, ok := extsmap[filter]
 
 			if ok {
